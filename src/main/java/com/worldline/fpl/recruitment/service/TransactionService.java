@@ -66,6 +66,7 @@ public class TransactionService {
 	}
 
 	public void removeTransactionByAccount(String accountId, String transactionId) {
+
 		
 		checkAccount(accountId);
 		checkTransaction(transactionId, accountId);
