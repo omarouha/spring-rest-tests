@@ -63,4 +63,14 @@ public class TransactionRepositoryImpl implements TransactionRepository,
 				.collect(Collectors.toList()));
 	}
 
+	@Override
+	public boolean isTransactionExist(String transactionId, String accountId) {
+		return transactions.stream().anyMatch(t -> t.getAccountId().equals(accountId) && t.getId().equals(transactionId));
+	}
+
+	@Override
+	public void removeTransaction(String transactionId) {
+		transactions.removeIf(t -> t.getId().equals(transactionId));
+	}
+
 }

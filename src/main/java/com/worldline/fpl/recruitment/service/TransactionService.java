@@ -45,10 +45,7 @@ public class TransactionService {
 	 */
 	public Page<TransactionResponse> getTransactionsByAccount(String accountId,
 			Pageable p) {
-		if (!accountService.isAccountExist(accountId)) {
-			throw new ServiceException(ErrorCode.INVALID_ACCOUNT,
-					"Account doesn't exist");
-		}
+		checkAccount(accountId);
 		return new PageImpl<TransactionResponse>(transactionRepository
 				.getTransactionsByAccount(accountId, p).getContent().stream()
 				.map(this::map).collect(Collectors.toList()));
@@ -66,6 +63,28 @@ public class TransactionService {
 		result.setId(transaction.getId());
 		result.setNumber(transaction.getNumber());
 		return result;
+	}
+
+	public void removeTransactionByAccount(String accountId, String transactionId) {
+		
+		checkAccount(accountId);
+		checkTransaction(transactionId, accountId);
+		transactionRepository.removeTransaction(transactionId);
+		
+	}
+
+	private void checkTransaction(String transactionId, String accountId) {
+		if(!transactionRepository.isTransactionExist(transactionId, accountId)){
+			throw new ServiceException(ErrorCode.INVALID_TRANSACTION,
+					"Transaction doesn't exist");
+		}
+	}
+
+	private void checkAccount(String accountId) {
+		if (!accountService.isAccountExist(accountId)) {
+			throw new ServiceException(ErrorCode.INVALID_ACCOUNT,
+					"Account doesn't exist");
+		}
 	}
 
 }
