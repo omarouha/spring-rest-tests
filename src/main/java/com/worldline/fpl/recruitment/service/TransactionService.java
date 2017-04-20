@@ -68,4 +68,17 @@ public class TransactionService {
 		return result;
 	}
 
+	public void removeTransactionByAccount(String accountId, String transactionId) {
+		if (!accountService.isAccountExist(accountId)) {
+			throw new ServiceException(ErrorCode.INVALID_ACCOUNT,
+					"Account doesn't exist");
+		}
+		if(!transactionRepository.isTransactionExist(transactionId, accountId)){
+			throw new ServiceException(ErrorCode.INVALID_TRANSACTION,
+					"Transaction doesn't exist");
+		}
+		transactionRepository.removeTransaction(transactionId);
+		
+	}
+
 }

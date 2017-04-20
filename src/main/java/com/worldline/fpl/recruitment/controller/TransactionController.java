@@ -44,4 +44,16 @@ public interface TransactionController {
 			@ApiParam("Account ID") @PathVariable("accountId") String accountId,
 			@ApiParam("Pageable information") @PageableDefault Pageable p);
 
+
+	@RequestMapping(value = "/{transactionId}", method = RequestMethod.GET)
+	@ApiOperation(value = "Get transaction list related to an account", response = TransactionResponse.class, responseContainer = "List")
+	@ApiResponses({
+			@ApiResponse(code = 404, message = "Account not found", response = ErrorResponse.class),
+			@ApiResponse(code = 404, message = "Transaction not found", response = ErrorResponse.class) })
+	void removeTransactionByAccount(
+			@ApiParam("Account ID") @PathVariable("accountId") String accountId,
+			@ApiParam("Transaction ID") @PathVariable("transactionId") String transactionId);
+
+
+
 }
